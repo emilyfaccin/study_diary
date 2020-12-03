@@ -10,9 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_02_010042) do
+ActiveRecord::Schema.define(version: 2020_12_03_120415) do
 
-  create_table "study_items", force: :cascade do |t|
+  create_table "categories", primary_key: "category_id", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "categories_studyitems", id: false, force: :cascade do |t|
+    t.integer "studyitem_id", null: false
+    t.integer "category_id", null: false
+  end
+
+  create_table "study_items", primary_key: "study_item_id", force: :cascade do |t|
     t.string "title"
     t.string "category"
     t.text "description"
@@ -20,4 +31,15 @@ ActiveRecord::Schema.define(version: 2020_12_02_010042) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "study_items_categories", force: :cascade do |t|
+    t.integer "study_item_id_id", null: false
+    t.integer "category_id_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id_id"], name: "index_study_items_categories_on_category_id_id"
+    t.index ["study_item_id_id"], name: "index_study_items_categories_on_study_item_id_id"
+  end
+
+  add_foreign_key "study_items_categories", "category_ids"
+  add_foreign_key "study_items_categories", "study_item_ids"
 end
